@@ -1,0 +1,7 @@
+BETA Encrypted Storage.
+Implementacion de cifrado AES y RSA.
+
+
+Se puede implementar mas algoritmos deseados.
+Implementable en cualquier software debido a que está en java, realizando ajustes necesarios al código.
+Implementado y semi funcional en Springboot, realizando ajustes en el config y en bean.
