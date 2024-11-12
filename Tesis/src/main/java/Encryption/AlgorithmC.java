@@ -11,4 +11,4 @@ public class AlgorithmC implements EncryptionAlgorithm {
         return data.replace("encryptedC:", "");
     }
 }
-//En caso de haber un tercero
+//En caso de haber un tercero o aún mas algoritmos

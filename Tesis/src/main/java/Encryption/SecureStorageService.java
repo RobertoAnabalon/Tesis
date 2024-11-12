@@ -1,21 +1,31 @@
 package main.java.Encryption;
 
-import main.java.management.StorageManager;
-
 public class SecureStorageService {
+    private final EncryptionContext encryptionContext;
 
-    private final StorageManager storageManager;
-
-
-    public SecureStorageService(StorageManager storageManager) {
-        this.storageManager = storageManager;
+    public SecureStorageService(EncryptionContext encryptionContext) {
+        this.encryptionContext = encryptionContext;
     }
 
-    public void storeSensitiveData(String key, String data) throws Exception {
-        storageManager.storeData(key, data);
+    public String encrypt(String data) {
+        try {
+            String encryptedData = encryptionContext.encrypt(data);
+            System.out.println("Resultado del cifrado : " + encryptedData);
+            return encryptedData;
+        } catch (Exception e) {
+            System.err.println("Error al cifrar: " + e.getMessage());
+            return null;
+        }
     }
 
-    public String retrieveSensitiveData(String key) throws Exception {
-        return storageManager.retrieveData(key);
+    public String decrypt(String encryptedData) {
+        try {
+            String decryptedData = encryptionContext.decrypt(encryptedData);
+            System.out.println("Resultado del descifrado: " + decryptedData);
+            return decryptedData;
+        } catch (Exception e) {
+            System.err.println("Error al descifrar: " + e.getMessage());
+            return null;
+        }
     }
 }

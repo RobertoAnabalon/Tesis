@@ -10,14 +10,14 @@ public class AESAlgorithm implements EncryptionAlgorithm {
 
     private SecretKey secretKey;
 
-    // Default constructor, generates a new key
+    //Constructor para cifrado y descifrado RSA
+
     public AESAlgorithm() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(256); // AES-256
         this.secretKey = keyGen.generateKey();
     }
-
-    // New constructor to accept an existing key
+    
     public AESAlgorithm(SecretKeySpec secretKeySpec) {
         this.secretKey = secretKeySpec;
     }
@@ -41,6 +41,7 @@ public class AESAlgorithm implements EncryptionAlgorithm {
         return new String(decryptedData);
     }
 }
+
 
 
 

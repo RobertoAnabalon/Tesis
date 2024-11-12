@@ -1,30 +1,24 @@
 package main.java.Encryption;
 
-import java.util.Base64;
-
-
 public class EncryptionContext {
+    private EncryptionAlgorithm encryptionAlgorithm;
 
-    private EncryptionAlgorithm algorithm;
-
-    // Metodo rsa o aes para encriptar
-    public void setAlgorithm(EncryptionAlgorithm algorithm) {
-        this.algorithm = algorithm;
+    // Método para establecer el algoritmo de cifrado
+    public void setEncryptionAlgorithm(EncryptionAlgorithm encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
     }
 
-    public String encryptData(String data) throws Exception {
-        if (algorithm == null) {
-            throw new IllegalStateException("ERROR: algoritmo no seteado. Implementar método ecriptado/desencriptado"); //en caso de no tener el algoritmo en el encryption storage
+    public String encrypt(String data) throws Exception {
+        if (encryptionAlgorithm == null) {
+            throw new IllegalStateException("El algoritmo de cifrado no ha sido configurado.");
         }
-        return algorithm.encrypt(data);
+        return encryptionAlgorithm.encrypt(data);
     }
 
-    // Desencriptado
-    public String decryptData(String data) throws Exception {
-        if (algorithm == null) {
-            throw new IllegalStateException("ERROR: algoritmo no seteado. Implementar desencriptado");
+    public String decrypt(String encryptedData) throws Exception {
+        if (encryptionAlgorithm == null) {
+            throw new IllegalStateException("El algoritmo de cifrado no ha sido configurado.");
         }
-        return algorithm.decrypt(data);
+        return encryptionAlgorithm.decrypt(encryptedData);
     }
 }
-

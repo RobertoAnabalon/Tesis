@@ -1,52 +1,35 @@
 package main.java.management;
 
-import java.util.Base64;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.HashMap;
+import java.util.Map;
 
-import main.java.Encryption.AESAlgorithm;
-import main.java.Encryption.EncryptionContext;
-import main.java.Encryption.RSAAlgorithm;
+import main.java.Encryption.SecureStorageService;
 
 public class StorageManager {
+    private final SecureStorageService secureStorageService;
+    private final Map<String, String> storage = new HashMap<>();
 
-    private final EncryptionContext encryptionContext;
-    private final AESAlgorithm aesAlgorithm;
-    private final RSAAlgorithm rsaAlgorithm;
-
-    public StorageManager(EncryptionContext encryptionContext, AESAlgorithm aesAlgorithm, RSAAlgorithm rsaAlgorithm) {
-        this.encryptionContext = encryptionContext;
-        this.aesAlgorithm = aesAlgorithm;
-        this.rsaAlgorithm = rsaAlgorithm;
+    public StorageManager(SecureStorageService secureStorageService) {
+        this.secureStorageService = secureStorageService;
     }
 
-    public void storeData(String key, String data) throws Exception {
-        // Cifrar los datos con AES
-        encryptionContext.setAlgorithm(aesAlgorithm);
-        String encryptedData = encryptionContext.encryptData(data);
-        
-        // Cifrar la clave AES con RSA
-        encryptionContext.setAlgorithm(rsaAlgorithm);
-        String encryptedAESKey = encryptionContext.encryptData(Base64.getEncoder().encodeToString(aesAlgorithm.getSecretKey().getEncoded()));
-
-        System.out.println("Storing encrypted data: " + encryptedData);
-        System.out.println("Storing encrypted AES key: " + encryptedAESKey);
-
-        // Se guarda *encryptedData* y *encryptedAESKey* en la base de datos o almacenamiento deseado
+    public void saveData(String key, String data) {
+        String encryptedData = secureStorageService.encrypt(data);
+        if (encryptedData != null) {
+            System.out.println("Guardando datos cifrados con clave: " + key);
+            storage.put(key, encryptedData);
+        } else {
+            System.err.println("Error al guardar los datos.");
+        }
     }
 
-    public String retrieveData(String key) throws Exception {
-        // Recuperar datos cifrados y clave AES cifrada del almacenamiento simulado aquí
-        String encryptedData = "encrypted_data_from_storage"; // Place holder
-        String encryptedAESKey = "encrypted_aes_key_from_storage"; // Place holder
-
-        // Descifrar la clave AES con RSA
-        encryptionContext.setAlgorithm(rsaAlgorithm);
-        String decryptedAESKey = encryptionContext.decryptData(encryptedAESKey);
-        byte[] decodedKey = Base64.getDecoder().decode(decryptedAESKey);
-        AESAlgorithm aesAlgorithmWithDecryptedKey = new AESAlgorithm(new SecretKeySpec(decodedKey, "AES"));
-
-        // Usar la clave AES descifrada para descifrar los datos
-        encryptionContext.setAlgorithm(aesAlgorithmWithDecryptedKey);
-        return encryptionContext.decryptData(encryptedData);
+    public String getData(String key) {
+        String encryptedData = storage.get(key);
+        if (encryptedData == null) {
+            System.out.println("No se encontraron datos para la clave: " + key);
+            return null;
+        }
+        System.out.println("Datos recuperados (cifrados) para la clave: " + key + " - " + encryptedData);
+        return secureStorageService.decrypt(encryptedData);
     }
 }

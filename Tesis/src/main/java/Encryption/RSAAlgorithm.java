@@ -3,17 +3,14 @@ package main.java.Encryption;
 import javax.crypto.Cipher;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Base64;
-
-
 import java.security.*;
-import javax.crypto.Cipher;
-import java.util.Base64;
+
 
 public class RSAAlgorithm implements EncryptionAlgorithm {
     private final KeyPair keyPair;
+
+    //Constructor para cifrado y descifrado RSA
 
     public RSAAlgorithm() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -36,4 +33,3 @@ public class RSAAlgorithm implements EncryptionAlgorithm {
         return new String(decryptedData);
     }
 }
-
